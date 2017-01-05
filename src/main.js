@@ -1,5 +1,8 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import App from './App.vue';
+import Tags from './Tags.vue';
+import Pagination from './Pagination.vue';
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import { Client } from 'subscriptions-transport-ws';
 import VueApollo, { addGraphQLSubscriptions } from 'vue-apollo';
@@ -24,7 +27,19 @@ Vue.use(VueApollo, {
   apolloClient,
 });
 
-new Vue({
-  el: '#app',
-  render: h => h(App)
+Vue.use(VueRouter);
+
+const router = new VueRouter({
+  routes: [
+    { path: '/', component: App,
+      children: [
+        { path: '/', component: Tags },
+        { path: '/pagination', component: Pagination }
+      ]
+    }
+  ]
 });
+
+const app = new Vue({
+  router
+}).$mount('#app');
